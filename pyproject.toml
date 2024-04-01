@@ -1,0 +1,66 @@
+[project]
+name = "object_detection_dofus_model"
+readme = "README.md"
+dynamic = [ "dependencies", "version",]
+
+[project.scripts]
+object-detection-dofus = "object_detection_dofus_model.__main__:main"
+
+[tool.kedro]
+package_name = "object_detection_dofus_bot"
+project_name = "object_detection_dofus_bot"
+kedro_init_version = "0.19.1"
+tools = "[]"
+
+[project.entry-points."kedro.hooks"]
+
+#[tool.setuptools.dynamic.dependencies]
+#file = "src/environment.yaml"
+
+[tool.setuptools.dynamic.version]
+attr = "object_detection_dofus_bot.__version__"
+
+[tool.setuptools.packages.find]
+where = [ "src",]
+namespaces = false
+exclude = ["tests"]
+
+
+[tool.pytest.ini_options]
+addopts = """
+--cov-report term-missing \
+--cov src/object_detection_dofus_bot -ra"""
+
+[tool.coverage.report]
+fail_under = 0
+show_missing = true
+exclude_lines = ["pragma: no cover", "raise NotImplementedError"]
+
+[tool.poetry]
+name = "object-detection-dofus"
+version = "0.0.1"
+description = "Ressources detection in dofus using Yolo and Roboflow"
+authors = ["Clement Franger <clement.franger@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+kedro="0.19.1"
+kedro-datasets="2.0.0"
+kedro-docker="0.5.0"
+ultralytics="8.0.196"
+comet_ml="^3.39.0"
+roboflow="^1.1.16"
+
+[tool.poetry.dev-dependencies]
+ruff="^0.3.2"
+pytest="^8.1.1"
+pytest-cov = "^4.1.0"
+pre-commit="^3.7.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 100
