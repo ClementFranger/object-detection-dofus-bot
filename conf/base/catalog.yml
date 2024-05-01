@@ -1,0 +1,19 @@
+#roboflow:
+#  type: object_detection_dofus_model.datasets.roboflow_dataset.RoboflowDataset
+#  path: data/01_raw/Dofus
+#  workspace: clement-franger
+#  project: dofus-2yzyv
+#  dataset_version: 10
+#  model_format: ${globals:model.yolo}
+#  credentials: roboflow_credentials
+
+model:
+  type: object_detection_dofus_bot.datasets.cometml.CometMLDataset
+  workspace: clementfranger
+  name: object-detection-dofus
+  model_version: 1.0.3
+  path: data/01_raw
+
+dofus:
+  type: object_detection_dofus_bot.datasets.application.ApplicationDataset
+  title: Dofus 2

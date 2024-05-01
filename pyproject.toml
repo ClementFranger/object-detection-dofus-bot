@@ -1,10 +1,10 @@
 [project]
-name = "object_detection_dofus_model"
+name = "object_detection_dofus_bot"
 readme = "README.md"
 dynamic = [ "dependencies", "version",]
 
 [project.scripts]
-object-detection-dofus = "object_detection_dofus_model.__main__:main"
+object_detection_dofus_bot = "object_detection_dofus_bot.__main__:main"
 
 [tool.kedro]
 package_name = "object_detection_dofus_bot"
@@ -37,7 +37,7 @@ show_missing = true
 exclude_lines = ["pragma: no cover", "raise NotImplementedError"]
 
 [tool.poetry]
-name = "object-detection-dofus"
+name = "object_detection_dofus_bot"
 version = "0.0.1"
 description = "Ressources detection in dofus using Yolo and Roboflow"
 authors = ["Clement Franger <clement.franger@gmail.com>"]
@@ -47,10 +47,14 @@ readme = "README.md"
 python = "^3.11"
 kedro="0.19.1"
 kedro-datasets="2.0.0"
+kedro-viz="^8.0.1"
 kedro-docker="0.5.0"
 ultralytics="8.0.196"
-comet_ml="^3.39.0"
+pyautogui="^0.9.54"
 roboflow="^1.1.16"
+comet_ml="^3.39.0"
+opencv-python="^4.9.0.80"
+opencv-contrib-python="^4.9.0.80"
 
 [tool.poetry.dev-dependencies]
 ruff="^0.3.2"
