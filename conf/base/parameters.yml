@@ -1,1 +1,7 @@
 yolo: ${globals:model.yolo}${globals:model.format}.pt
+n_episodes: 100_000
+agent:
+  learning_rate: 0.01
+  initial_epsilon: 1.0
+  epsilon_decay: 1.0 / (100_000 / 2)  # reduce the exploration over time
+  final_epsilon: 0.1

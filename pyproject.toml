@@ -55,6 +55,7 @@ roboflow="^1.1.16"
 comet_ml="^3.39.0"
 opencv-python="^4.9.0.80"
 opencv-contrib-python="^4.9.0.80"
+gymnasium="^0.29.1"
 
 [tool.poetry.dev-dependencies]
 ruff="^0.3.2"

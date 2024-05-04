@@ -6,13 +6,12 @@ logger = logging.getLogger(__name__)
 
 
 class CometMLDataset(AbstractDataset):
-
     def __init__(
-            self,
-            workspace: str = None,
-            name: str = None,
-            model_version: str = None,
-            path: str = None,
+        self,
+        workspace: str = None,
+        name: str = None,
+        model_version: str = None,
+        path: str = None,
     ):
         super().__init__()
         self.workspace = workspace

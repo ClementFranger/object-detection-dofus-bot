@@ -1,6 +1,7 @@
 """object_detection_dofus_bot file for ensuring the package is executable
 as `object-detection-dofus-bot` and `python -m object_detection_dofus_bot`
 """
+
 import importlib
 from pathlib import Path
 
