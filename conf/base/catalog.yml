@@ -13,7 +13,8 @@ model:
   name: object-detection-dofus
   model_version: 1.0.3
   path: data/01_raw
+  credentials: cometml_credentials
 
 dofus:
   type: object_detection_dofus_bot.datasets.application.ApplicationDataset
-  title: Dofus 2
+  title: Minifranger
