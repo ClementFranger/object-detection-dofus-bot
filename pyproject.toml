@@ -14,22 +14,11 @@ tools = "[]"
 
 [project.entry-points."kedro.hooks"]
 
-#[tool.setuptools.dynamic.dependencies]
-#file = "src/environment.yaml"
-
-[tool.setuptools.dynamic.version]
-attr = "object_detection_dofus_bot.__version__"
-
-[tool.setuptools.packages.find]
-where = [ "src",]
-namespaces = false
-exclude = ["tests"]
-
-
 [tool.pytest.ini_options]
 addopts = """
 --cov-report term-missing \
---cov src/object_detection_dofus_bot -ra"""
+--cov src/object_detection_dofus_bot -ra
+--log-cli-level=INFO"""
 
 [tool.coverage.report]
 fail_under = 0
@@ -44,24 +33,23 @@ authors = ["Clement Franger <clement.franger@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
-kedro="0.19.1"
-kedro-datasets="2.0.0"
-kedro-viz="^8.0.1"
-kedro-docker="0.5.0"
-ultralytics="8.0.196"
-pyautogui="^0.9.54"
-roboflow="^1.1.16"
-comet_ml="^3.39.0"
-opencv-python="^4.9.0.80"
-opencv-contrib-python="^4.9.0.80"
-gymnasium="^0.29.1"
+python = ">=3.10, <3.13"
+kedro = "^0.19.9"
+kedro-viz = "^10.0.0"
+kedro-datasets = "^5.1.0"
+kedro-docker = "^0.6.1"
+ultralytics="^8.3.39"
+pyautogui = "^0.9.54"
+comet-ml = "^3.47.4"
+opencv-python = "^4.10.0.84"
+gymnasium = "^1.0.0"
+opencv-contrib-python = "^4.10.0.84"
 
-[tool.poetry.dev-dependencies]
-ruff="^0.3.2"
-pytest="^8.1.1"
-pytest-cov = "^4.1.0"
-pre-commit="^3.7.0"
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^4.0.1"
+ruff = "^0.6.9"
+pytest = "^8.3.3"
+pytest-cov = "^5.0.0"
 
 [build-system]
 requires = ["poetry-core"]

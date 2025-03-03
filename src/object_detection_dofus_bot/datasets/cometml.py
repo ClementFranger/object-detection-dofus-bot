@@ -1,3 +1,5 @@
+from typing import Any
+
 import logging
 from kedro.io.core import AbstractDataset, DatasetError
 from comet_ml.api import API
@@ -8,17 +10,23 @@ logger = logging.getLogger(__name__)
 class CometMLDataset(AbstractDataset):
     def __init__(
         self,
+        credentials: dict[str, Any] = None,
         workspace: str = None,
         name: str = None,
         model_version: str = None,
         path: str = None,
     ):
         super().__init__()
+        if not (credentials and "token" in credentials and credentials["token"]):
+            raise DatasetError(
+                "'token' argument cannot be empty. Please " "provide a Comet ML token."
+            )
         self.workspace = workspace
         self.name = name
         self.model_version = model_version
         self.path = path
-        self.api = API()
+
+        self.api = API(api_key=credentials["token"])
 
     def _describe(self):
         return {

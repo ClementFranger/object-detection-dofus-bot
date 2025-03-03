@@ -1,6 +1,8 @@
 from collections import defaultdict
 
 import numpy as np
+from ultralytics.engine.results import Results
+from supervision import Detections
 
 
 class DofusAgent:
@@ -67,3 +69,45 @@ class DofusAgent:
 
     def decay_epsilon(self):
         self.epsilon = max(self.final_epsilon, self.epsilon - self.epsilon_decay)
+
+
+class DofusFarmAgent(DofusAgent):
+    def get_action(self, obs: list[Results]) -> int:
+        """
+        Returns the collect action first until not ressource is available
+        otherswise a random action with probability epsilon to ensure exploration.
+        """
+        # collect whenever possible
+        if obs:
+            return self.env.action_space.n - 1
+
+        # return a random action to explore the environment (except collect)
+        else:
+            mask = np.ones(self.env.action_space.n, dtype=np.int8)  # All actions are valid
+            mask[self.env.action_space.n - 1] = 0  # Set the "collect" action to 0
+            return self.env.action_space.sample(mask=mask)
+
+
+class DofusCoinBouftouFarmAgent(DofusAgent):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.route = [3, 3, 2, 2, 2, 2, 2, 1, 0, 0, 0, 1, 0, 0]
+        self.current_step = 0
+        self.collect = 0
+
+    def get_action(self, obs: Detections) -> int:
+        """
+        Returns the collect action first until not ressource is available
+        otherwise the specified route will be followed
+        """
+        # collect whenever possible
+        if obs:
+            self.collect += 1
+            return self.env.action_space.n - 1
+
+        # Follow the specified route
+        else:
+            action = self.route[self.current_step]
+            self.current_step = (self.current_step + 1) % len(self.route)  # Boucle sur la route
+            self.collect = 0
+            return action

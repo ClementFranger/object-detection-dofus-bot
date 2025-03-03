@@ -1,12 +1,10 @@
-import time
-
 import os
 
 from ultralytics import YOLO
 from ultralytics.data.loaders import LoadScreenshots
 
-from object_detection_dofus_bot.pipelines.botting.agent import DofusAgent
-from object_detection_dofus_bot.pipelines.botting.dofus import DofusEnv
+from object_detection_dofus_bot.pipelines.botting.agent import DofusCoinBouftouFarmAgent
+from object_detection_dofus_bot.pipelines.botting.env import DofusEnv
 
 
 def infer(model, dofus):
@@ -15,20 +13,20 @@ def infer(model, dofus):
     loader = LoadScreenshots(
         f"screen 2 {dofus.left} {dofus.top} {dofus.width} {dofus.height}"
     )  # Do not forget 'screen' as source
-    for screen, img, _ in loader:
+    for _, img, _ in loader:
         model.predict(img[0], show=True, imgsz=(1920, 1088))
 
 
 def bot(model, dofus, params):
     env = DofusEnv(model, dofus)
-    agent = DofusAgent(env, **params)
+    agent = DofusCoinBouftouFarmAgent(env, **params)
 
     obs, info = env.reset()
     done = False
     while not done:
         action = agent.get_action(obs)
-        next_obs, reward, terminated, truncated, info = env.step(action)
-        time.sleep(10)
+
+        next_obs, reward, terminated, truncated, info = env.step(action, current_observation=obs)
 
         # update the agent
         # agent.update(obs, action, reward, terminated, next_obs)
