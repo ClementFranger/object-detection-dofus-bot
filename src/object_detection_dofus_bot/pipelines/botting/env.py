@@ -29,9 +29,10 @@ class DofusEnv(gym.Env):
         )
         self.MOVE_MODE = kwargs.get("move_mode") or self.MOVE_MODE
         self.DEFAULT_KEYS = kwargs.get("default_keys") or self.DEFAULT_KEYS
+        self.source = kwargs.get("source") or "screen 0"
 
         self.screen = LoadScreenshots(
-            f"screen 2 {self.dofus.left} {self.dofus.top} {self.dofus.width} {self.dofus.height}"
+            f"{self.source} {dofus.left} {dofus.top} {dofus.width} {dofus.height}"
         )  # Do not forget 'screen' as source
 
         # Observation space is the image of the game
