@@ -1,5 +1,6 @@
 from collections import defaultdict
 
+
 import numpy as np
 from ultralytics.engine.results import Results
 from supervision import Detections
@@ -95,19 +96,25 @@ class DofusCoinBouftouFarmAgent(DofusAgent):
         self.current_step = 0
         self.collect = 0
 
-    def get_action(self, obs: Detections) -> int:
+    def get_action(self, obs: Detections) -> tuple[Detections, int]:
         """
         Returns the collect action first until not ressource is available
         otherwise the specified route will be followed
         """
         # collect whenever possible
+        # Filter only wood resources
+        print("before filter")
+        print(obs)
+        obs = obs[np.isin(obs.data["class_name"], ["frene", "chataigner", "sauge"])]
+        print("after filter")
+        print(obs)
         if obs:
             self.collect += 1
-            return self.env.action_space.n - 1
+            return obs, self.env.action_space.n - 1
 
         # Follow the specified route
         else:
             action = self.route[self.current_step]
             self.current_step = (self.current_step + 1) % len(self.route)  # Boucle sur la route
             self.collect = 0
-            return action
+            return obs, action

@@ -24,7 +24,7 @@ def bot(model, dofus, params):
     obs, info = env.reset()
     done = False
     while not done:
-        action = agent.get_action(obs)
+        obs, action = agent.get_action(obs)
 
         next_obs, reward, terminated, truncated, info = env.step(action, current_observation=obs)
 
