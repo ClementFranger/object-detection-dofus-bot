@@ -33,12 +33,18 @@ class TestDofusFarmAgent:
 class TestDofusCoinBouftouFarmAgent:
     def test_route(self, catalog_config, env, data):
         agent = DofusCoinBouftouFarmAgent(env, **catalog_config["parameters"]["agent"])
+        image = cv2.imread(str(data / "test_do_not_collect_1.png"))
+
+        detections = env._detect(image)
+        filtered_detections = env._filter(detections)
 
         assert agent.route == [3, 3, 2, 2, 2, 2, 2, 1, 0, 0, 0, 1, 0, 0]
 
         for step in range(20):
             expected_action = agent.route[step % len(agent.route)]  # Ensure looping
-            action = agent.get_action([])  # Pass empty detection list (no resources)
+            action = agent.get_action(
+                filtered_detections
+            )  # Pass empty detection list (no resources)
             assert (
                 action == expected_action
             ), f"Step {step}: Expected {expected_action}, got {action}"

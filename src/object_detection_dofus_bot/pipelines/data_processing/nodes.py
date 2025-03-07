@@ -1,5 +1,4 @@
 import os
-
 from ultralytics import YOLO
 from ultralytics.data.loaders import LoadScreenshots
 
@@ -18,7 +17,7 @@ def infer(model, dofus):
 
 
 def bot(model, dofus, params):
-    env = DofusEnv(model, dofus)
+    env = DofusEnv(model, dofus, source="screen 2")
     agent = DofusCoinBouftouFarmAgent(env, **params)
 
     obs, info = env.reset()
