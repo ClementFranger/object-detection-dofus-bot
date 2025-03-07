@@ -42,6 +42,6 @@ def data():
     return Path(__file__).parent / "data"
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def env(model, dofus):
     return DofusEnv(model, dofus)

@@ -44,12 +44,25 @@ comet-ml = "^3.47.4"
 opencv-python = "^4.10.0.84"
 gymnasium = "^1.0.0"
 opencv-contrib-python = "^4.10.0.84"
+keyboard = "^0.13.5"
+pytest-xvfb = "^3.0.0"
+supervision = "^0.25.1"
+easyocr = "^1.7.2"
+torch = {version = "^2.5.1", source="torch_cuda"}
+torchvision = {version = "^0.20.1", source="torch_cuda"}
+torchaudio = {version = "^2.5.1", source="torch_cuda"}
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^4.0.1"
 ruff = "^0.6.9"
 pytest = "^8.3.3"
 pytest-cov = "^5.0.0"
+pytest-xvfb = "^3.0.0"
+
+[[tool.poetry.source]]
+name = "torch_cuda"
+url = "https://download.pytorch.org/whl/cu121"
+priority = "explicit"
 
 [build-system]
 requires = ["poetry-core"]
