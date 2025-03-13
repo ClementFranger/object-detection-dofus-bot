@@ -17,7 +17,7 @@ def infer(model, dofus):
 
 
 def bot(model, dofus, params):
-    env = DofusEnv(model, dofus, source="screen 2")
+    env = DofusEnv(model, dofus, source="screen 2", resources=["frene", "chataigner", "sauge"])
     agent = DofusCoinBouftouFarmAgent(env, **params)
 
     obs, info = env.reset()
@@ -25,7 +25,7 @@ def bot(model, dofus, params):
     while not done:
         obs, action = agent.get_action(obs)
 
-        next_obs, reward, terminated, truncated, info = env.step(action, current_observation=obs)
+        next_obs, reward, terminated, truncated, info = env.step(action, obs=obs)
 
         # update the agent
         # agent.update(obs, action, reward, terminated, next_obs)
