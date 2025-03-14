@@ -1,9 +1,8 @@
 from collections import defaultdict
 
-
 import numpy as np
-from ultralytics.engine.results import Results
-from supervision import Detections
+
+from object_detection_dofus_bot.pipelines.botting import Obs
 
 
 class DofusAgent:
@@ -73,20 +72,20 @@ class DofusAgent:
 
 
 class DofusFarmAgent(DofusAgent):
-    def get_action(self, obs: list[Results]) -> int:
+    def get_action(self, obs: Obs):
         """
         Returns the collect action first until not ressource is available
         otherswise a random action with probability epsilon to ensure exploration.
         """
         # collect whenever possible
-        if obs:
-            return self.env.action_space.n - 1
+        if obs["resources"]:
+            return obs, self.env.action_space.n - 1
 
         # return a random action to explore the environment (except collect)
         else:
             mask = np.ones(self.env.action_space.n, dtype=np.int8)  # All actions are valid
             mask[self.env.action_space.n - 1] = 0  # Set the "collect" action to 0
-            return self.env.action_space.sample(mask=mask)
+            return obs, self.env.action_space.sample(mask=mask)
 
 
 class DofusCoinBouftouFarmAgent(DofusAgent):
@@ -96,19 +95,13 @@ class DofusCoinBouftouFarmAgent(DofusAgent):
         self.current_step = 0
         self.collect = 0
 
-    def get_action(self, obs: Detections) -> tuple[Detections, int]:
+    def get_action(self, obs: Obs):
         """
         Returns the collect action first until not ressource is available
         otherwise the specified route will be followed
         """
         # collect whenever possible
-        # Filter only wood resources
-        print("before filter")
-        print(obs)
-        obs = obs[np.isin(obs.data["class_name"], ["frene", "chataigner", "sauge"])]
-        print("after filter")
-        print(obs)
-        if obs:
+        if obs["resources"]:
             self.collect += 1
             return obs, self.env.action_space.n - 1
 
