@@ -17,7 +17,9 @@ def infer(model, dofus):
 
 
 def bot(model, dofus, params):
-    env = DofusEnv(model, dofus, source="screen 2", resources=["frene", "chataigner", "sauge"])
+    env = DofusEnv(
+        model, dofus, source="screen 2", resources=["frene", "chataigner", "sauge", "trefle"]
+    )
     agent = DofusCoinBouftouFarmAgent(env, **params)
 
     obs, info = env.reset()

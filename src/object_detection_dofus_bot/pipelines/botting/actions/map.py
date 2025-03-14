@@ -66,4 +66,5 @@ class MapHandler(FactoryInstance):
         pyautogui.mouseUp(x, y)  # Relâche le clic gauche
 
     def wait_perform_action(self, obs: Obs, next_ops: Obs):
-        return obs["map"] == next_ops["map"]
+        """Wait map has changed"""
+        return obs["map"] == next_ops["map"] if obs["map"] and next_ops["map"] else True

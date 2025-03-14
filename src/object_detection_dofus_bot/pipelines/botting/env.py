@@ -5,6 +5,7 @@ import numpy as np
 import os
 import re
 import supervision as sv
+from datetime import datetime, timedelta
 from gymnasium import spaces
 from supervision import Detections
 from ultralytics import YOLO
@@ -35,6 +36,7 @@ class DofusEnv(gym.Env):
         # Initialize actions instances
         MapHandler.factory(dofus, **kwargs)
         CollectHandler.factory()
+        self.tracker = sv.ByteTrack()
 
         self.resources = kwargs.get("resources", [])
         logger.info(f"Collecting {self.resources if self.resources else 'all'} resources")
@@ -141,7 +143,7 @@ class DofusEnv(gym.Env):
 
     def _filter(self, detections: Detections) -> Detections:
         """Filter only detections that are inside the interactive game zone (middle)"""
-        if self.resources:
+        if self.resources and detections:
             detections = detections[np.isin(detections.data["class_name"], self.resources)]
 
         # Filter only inside interactive zone
@@ -150,14 +152,15 @@ class DofusEnv(gym.Env):
         logger.debug(
             f"Detections before filtering: {len(detections)}, after filtering: {len(filtered_detections)}"
         )
-        return filtered_detections
+        tracked_filtered_detections = self.tracker.update_with_detections(filtered_detections)
+        return tracked_filtered_detections
 
     def _do_nothing(self, *args) -> None:
         pass
 
     def _perform_action(self, action: int, obs: Obs):
         logger.info(f"Performing action {self.action_space_mapping[action].__name__}")
-        self.action_space_mapping[action](obs)
+        return self.action_space_mapping[action](obs)
 
     def _wait_perform_action(self, action: int, obs: Obs, next_ops: Obs) -> bool:
         wait = True
@@ -185,7 +188,8 @@ class DofusEnv(gym.Env):
         self._perform_action(action, obs)
 
         # Important to wait before next observation (changing map)
-        while self._wait_perform_action(action, obs, self._get_obs()):
+        end_time = datetime.now() + timedelta(seconds=10)
+        while self._wait_perform_action(action, obs, self._get_obs()) and datetime.now() < end_time:
             logger.debug("Waiting for action to finish")
 
         # Capture the next game screen image as the next observation
