@@ -14,7 +14,7 @@ def create_pipeline(**kwargs) -> Pipeline:
             ),
             node(
                 func=bot,
-                inputs=["model", "dofus", "params:agent"],
+                inputs=["model", "dofus", "parameters"],
                 outputs=None,
                 name="bot_node",
             ),

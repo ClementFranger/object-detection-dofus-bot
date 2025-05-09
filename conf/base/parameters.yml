@@ -5,3 +5,11 @@ agent:
   initial_epsilon: 1.0
   epsilon_decay: 1.0 / (100_000 / 2)  # reduce the exploration over time
   final_epsilon: 0.1
+
+env:
+  source: "screen 2"
+  resources:
+    - frene
+    - chataigner
+    - sauge
+    - trefle

@@ -187,8 +187,8 @@ class DofusEnv(gym.Env):
         # Perform the action in the Dofus game environment
         self._perform_action(action, obs)
 
-        # Important to wait before next observation (changing map)
-        end_time = datetime.now() + timedelta(seconds=10)
+        # Important to wait before action is complete before next observation
+        end_time = datetime.now() + timedelta(seconds=20)
         while self._wait_perform_action(action, obs, self._get_obs()) and datetime.now() < end_time:
             logger.debug("Waiting for action to finish")
 

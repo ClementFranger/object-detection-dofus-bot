@@ -9,7 +9,8 @@ logger = logging.getLogger(__name__)
 
 class CollectHandler:
     def __init__(self):
-        self.attempts = 0
+        # self.attempts = 0
+        self.start_time = None
 
     def collect(self, obs: Obs):
         x1, y1, x2, y2 = map(int, obs["resources"].xyxy[0])
@@ -25,13 +26,19 @@ class CollectHandler:
         """Wait until tracked resource is collected"""
         # If the resources have been collected, then it is not in next_ops detection
         # (or next_ops detection is empty because no more resources)
+
         if obs["resources"].tracker_id[0] not in next_ops["resources"].tracker_id:
-            self.attempts += 1
-            logger.debug(f"Resource seems to be collected, incrementing attempts : {self.attempts}")
+            if not self.start_time:
+                self.start_time = time.time()
+                # self.attempts += 1
+                logger.info("Resource seems to be collected, launching timer")
+            print(f"elapsed time : {time.time() - self.start_time}")
         else:
-            self.attempts = 0
-        if self.attempts > 30:
-            logger.debug("Resource have definitely been collected, resetting attempts to 0")
-            self.attempts = 0
+            # self.attempts = 0
+            self.start_time = None
+            logger.debug("Resource is still present resetting timer")
+        if self.start_time and time.time() - self.start_time > 5:
+            logger.info("Resource have definitely been collected, resetting timer to 0")
+            self.start_time = None
             return False
         return True
